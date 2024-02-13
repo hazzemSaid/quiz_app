@@ -9,4 +9,7 @@ class A {
     Quitions("is it salah ? ", "images/i5.jpg", true),
     Quitions("is it mide ? ", "images/i6.jpg", false),
   ];
+  int szz() {
+    return q.length;
+  }
 }

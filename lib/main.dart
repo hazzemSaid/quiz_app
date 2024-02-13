@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Quiz.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 A qu = A();
 void main() {
@@ -36,7 +37,12 @@ class quiz extends StatefulWidget {
 class _quizState extends State<quiz> {
   List<Widget> answer = [];
 
-  int ind = 0;
+  int ind = 0, correct = 0;
+  AlertType fun(int x, int a) {
+    if (x > a / 2) return AlertType.success;
+    return AlertType.error;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,7 +63,7 @@ class _quizState extends State<quiz> {
                 qu.q[ind].name,
                 textAlign: TextAlign.end,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 202, 141, 141),
                   fontSize: 30,
                 ),
               ),
@@ -77,6 +83,7 @@ class _quizState extends State<quiz> {
                         color: Colors.green,
                       ),
                     );
+                    correct++;
                   } else {
                     answer.add(
                       Icon(
@@ -87,7 +94,28 @@ class _quizState extends State<quiz> {
                   }
                   setState(() {
                     ind++;
-                    if (ind >= 4) return;
+                    if (ind >= qu.q.length) {
+                      Alert(
+                        context: context,
+                        type: fun(correct, ind),
+                        title: "the end of Quitions",
+                        desc: "$correct / " + "$ind",
+                        buttons: [
+                          DialogButton(
+                            child: Text(
+                              "again",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            width: 120,
+                          )
+                        ],
+                      ).show();
+                      ind = 0;
+                      correct = 0;
+                      answer.clear();
+                    }
                   });
                 },
                 child: Text(
@@ -104,6 +132,7 @@ class _quizState extends State<quiz> {
               ElevatedButton(
                 onPressed: () {
                   if (qu.q[ind].ans == false) {
+                    correct++;
                     answer.add(
                       Icon(
                         Icons.thumb_up,
@@ -120,7 +149,28 @@ class _quizState extends State<quiz> {
                   }
                   setState(() {
                     ind++;
-                    if (ind >= 4) return;
+                    if (ind >= qu.q.length) {
+                      Alert(
+                        context: context,
+                        type: fun(correct, ind),
+                        title: "the end of Quitions",
+                        desc: "$correct / " + "$ind",
+                        buttons: [
+                          DialogButton(
+                            child: Text(
+                              "again",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            width: 120,
+                          )
+                        ],
+                      ).show();
+                      ind = 0;
+                      correct = 0;
+                      answer.clear();
+                    }
                   });
                 },
                 child: Text(
